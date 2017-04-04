@@ -29,7 +29,7 @@ SCENARIO("get root", "[init]")
 }
 SCENARIO ("reading", "[init]")
 {
-   Test<int> test;
+   Tree<int> test;
    test.reading("file1.txt");
    REQUIRE(test.search_result(3) == 1);
    REQUIRE(test.search_result(4) == 1);
@@ -38,10 +38,10 @@ SCENARIO ("reading", "[init]")
 
 SCENARIO ("writing", "[init]")
 {
-  Test<int> test1;
+  Tree<int> test1;
   test1.insert_node(4);
   test1.writing("file2.txt");
-  Test<int> test2;
+  Tree<int> test2;
   test2.reading("file2.txt");
   REQUIRE(test.get_count() == test2.get_count());
 }
