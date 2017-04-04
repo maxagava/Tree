@@ -36,7 +36,7 @@ SCENARIO ("reading/writing", "[init]")
   test1.writing("file2.txt");
   Tree<int> test2;
   test2.reading("file2.txt");
-  REQUIRE(test2.find_node(4, test.root_())!= NULL);
-  REQUIRE(test2.find_node(3, test.root_())!= NULL);
+  REQUIRE(test2.find_node(4, test2.root_())!= NULL);
+  REQUIRE(test2.find_node(3, test2.root_())!= NULL);
   REQUIRE(test1.get_count() == test2.get_count()==2);
 }
