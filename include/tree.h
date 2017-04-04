@@ -7,7 +7,6 @@ template <class T> struct Node
 	T key;
 	Node<T>* Left;
 	Node<T>* Right;
-	Node<T>*parent;
 };
 template <class T> class Tree
 {
@@ -36,26 +35,27 @@ Tree<T>::Tree()
 	root = nullptr;   
 	count = 0;
 }
+
 template<class T>
 Tree<T>::~Tree()
 {
 	deleteNode(root);
 }
+
 template<class T>
 void Tree<T>::deleteNode(Node<T>* temp)
 {
 	if (!temp)
 		return;
-	if (temp->Left)
-	{
-		deleteNode(temp->Left);
-		temp->Left = nullptr;
-	}
-
 	if (temp->Right)
 	{
 		deleteNode(temp->Right);
 		temp->Right = nullptr;
+	}
+	if (temp->Left)
+	{
+		deleteNode(temp->Left);
+		temp->Left = nullptr;
 	}
 	delete temp;
 }
@@ -65,6 +65,7 @@ Node<T>*Tree<T>::root_()const
 {
 	return root;
 }
+
 template<class T>
 int Tree<T>::get_count()const
 {
