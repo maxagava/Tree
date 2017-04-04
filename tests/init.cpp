@@ -27,21 +27,16 @@ SCENARIO("get root", "[init]")
   test.insert_node(4);
   REQUIRE(test.root_() != 0);
 }
-SCENARIO ("reading", "[init]")
-{
-   Tree<int> test;
-   test.reading("file1.txt");
-   REQUIRE(test.find_node(3, test.root_())!= NULL);
-   REQUIRE(test.find_node(4, test.root_())!= NULL);
-   REQUIRE(test.get_count() == 2);
-}
 
-SCENARIO ("writing", "[init]")
+SCENARIO ("reading/writing", "[init]")
 {
   Tree<int> test1;
   test1.insert_node(4);
+  test1.insert_node(3);
   test1.writing("file2.txt");
   Tree<int> test2;
   test2.reading("file2.txt");
-  REQUIRE(test1.get_count() == test2.get_count());
+  REQUIRE(test2.find_node(4, test.root_())!= NULL);
+  REQUIRE(test2.find_node(3, test.root_())!= NULL);
+  REQUIRE(test1.get_count() == test2.get_count()==2);
 }
