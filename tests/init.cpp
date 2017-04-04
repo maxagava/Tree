@@ -4,7 +4,7 @@
 SCENARIO ("init", "[init]")
 {
   Tree<int> test;
-  REQUIRE(test.root_() == NULL);
+  REQUIRE(test.root_() == nullptr);
   REQUIRE(test.get_count() == 0);
 }
 SCENARIO("insert", "[init]")
@@ -18,7 +18,7 @@ SCENARIO("find_node", "[init]")
 {
   Tree<int> test;
   test.insert_node(4);
-  REQUIRE(test.find_node(4, test.root_()) != NULL);
+  REQUIRE(test.find_node(4, test.root_()) != nullptr);
   REQUIRE(test.find_node(4, test.root_())->key == 4);
 }
 SCENARIO("get root", "[init]")
@@ -36,7 +36,7 @@ SCENARIO ("reading/writing", "[init]")
   test1.writing("file2.txt");
   Tree<int> test2;
   test2.reading("file2.txt");
-  REQUIRE(test2.find_node(4, test2.root_())!= NULL);
-  REQUIRE(test2.find_node(3, test2.root_())!= NULL);
+  REQUIRE(test2.find_node(4, test2.root_())!= nullptr);
+  REQUIRE(test2.find_node(3, test2.root_())!= nullptr);
   REQUIRE(test1.get_count() == test2.get_count());
 }
