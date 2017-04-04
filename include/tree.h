@@ -21,7 +21,7 @@ public:
 	void insert_node(const T&);
 	int get_count()const;
 	void print()const;
-	Node<T>* find_node(const T& val)const;
+	Node<T>* find_node(const T& val, Node<T>* temp)const;
 	Node<T>*root_()const;
 	void display(Node<T>* temp, unsigned int level)const;
 	void out()const;
@@ -101,14 +101,14 @@ void Tree<T>::insert_node(const T&x)
 
 }
 template<class T>
-Node<T>* Tree<T>::find_node(const T& val) const
+Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 {
-	if (root == 0 || val == root->key)
-		return root;
-	if (val > root->key)
-		return find_node(val);
+	if (temp == 0 || val == temp->key)
+ -		return temp;
+ -	if (val > temp->key)
+ -		return find_node(val, temp->Right);
 	else
-		return find_node(val);
+		return find_node(val, temp->Left);
 }
 
 template<typename T>
