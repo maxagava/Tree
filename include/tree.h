@@ -74,6 +74,7 @@ int Tree<T>::get_count()const
 template<class T>
 void Tree<T>::insert_node(const T&x)
 {
+	if (find_node(x, root_())) return;
 	Node<T>* dn = new Node<T>;
 	dn->key = x;
 	dn->Left = dn->Right = 0;
