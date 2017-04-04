@@ -32,30 +32,29 @@ public:
 template<class T>
 Tree<T>::Tree()
 {
-	root = nullptr;   
+	root = nullptr;
 	count = 0;
 }
-
 template<class T>
 Tree<T>::~Tree()
 {
 	deleteNode(root);
 }
-
 template<class T>
 void Tree<T>::deleteNode(Node<T>* temp)
 {
 	if (!temp)
 		return;
-	if (temp->Right)
-	{
-		deleteNode(temp->Right);
-		temp->Right = nullptr;
-	}
 	if (temp->Left)
 	{
 		deleteNode(temp->Left);
 		temp->Left = nullptr;
+	}
+
+	if (temp->Right)
+	{
+		deleteNode(temp->Right);
+		temp->Right = nullptr;
 	}
 	delete temp;
 }
@@ -65,7 +64,6 @@ Node<T>*Tree<T>::root_()const
 {
 	return root;
 }
-
 template<class T>
 int Tree<T>::get_count()const
 {
@@ -116,10 +114,17 @@ template<typename T>
 void Tree<T>::reading(const std::string filename)
 {
 	ifstream fin(filename);
+	if (root != nullptr)
+	{
+		deleteNode(root->Right);
+		deleteNode(root->Left);
+		root = 0;
+	}
+
 	int k;
 	fin >> k;
 	T temp;
-	for(int i = 0; i < k; ++i)
+	for (int i = 0; i < k; ++i)
 	{
 		fin >> temp;
 		insert_node(temp);
@@ -135,16 +140,16 @@ template<typename T>
 void Tree<T>::output(ostream& ost, Node<T>* temp)const
 {
 	if (!temp) return;
-		ost << temp->key <<" ";
-		output(ost, temp->Left);
-		output(ost, temp->Right);
+	ost << temp->key << " ";
+	output(ost, temp->Left);
+	output(ost, temp->Right);
 }
 
 template<typename T>
 void Tree<T>::writing(const std::string filename)
 {
 	ofstream fout(filename);
-	fout << count<< " ";
+	fout << count << " ";
 	output(fout, root);
 	fout.close();
 }
