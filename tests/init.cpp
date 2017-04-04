@@ -43,5 +43,5 @@ SCENARIO ("writing", "[init]")
   test1.writing("file2.txt");
   Tree<int> test2;
   test2.reading("file2.txt");
-  REQUIRE(test.get_count() == test2.get_count());
+  REQUIRE(test1.get_count() == test2.get_count());
 }
