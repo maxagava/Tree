@@ -31,8 +31,8 @@ SCENARIO ("reading", "[init]")
 {
    Tree<int> test;
    test.reading("file1.txt");
-   REQUIRE(test.search_result(3) == 1);
-   REQUIRE(test.search_result(4) == 1);
+   REQUIRE(test.find_node(3, test.root_())!= NULL);
+   REQUIRE(test.find_node(4, test.root_())!= NULL);
    REQUIRE(test.get_count() == 2);
 }
 
