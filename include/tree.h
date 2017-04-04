@@ -104,9 +104,9 @@ template<class T>
 Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 {
 	if (temp == 0 || val == temp->key)
- -		return temp;
- -	if (val > temp->key)
- -		return find_node(val, temp->Right);
+		return temp;
+	if (val > temp->key)
+		return find_node(val, temp->Right);
 	else
 		return find_node(val, temp->Left);
 }
