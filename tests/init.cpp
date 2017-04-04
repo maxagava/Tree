@@ -38,5 +38,5 @@ SCENARIO ("reading/writing", "[init]")
   test2.reading("file2.txt");
   REQUIRE(test2.find_node(4, test2.root_())!= NULL);
   REQUIRE(test2.find_node(3, test2.root_())!= NULL);
-  REQUIRE(test1.get_count() == test2.get_count()==2);
+  REQUIRE(test1.get_count() == test2.get_count());
 }
