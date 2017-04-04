@@ -24,7 +24,7 @@ SCENARIO("find_node", "[init]")
 SCENARIO("get root", "[init]")
 {
   Tree<int> test;
-  test.insert(4);
+  test.insert_node(4);
   REQUIRE(test.root_() != 0);
 }
 SCENARIO ("reading", "[init]")
@@ -39,7 +39,7 @@ SCENARIO ("reading", "[init]")
 SCENARIO ("writing", "[init]")
 {
   Test<int> test1;
-  test1.insert(4);
+  test1.insert_node(4);
   test1.writing("file2.txt");
   Test<int> test2;
   test2.reading("file2.txt");
