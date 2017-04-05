@@ -24,9 +24,9 @@ public:
 	Node<T>*root_()const;
 	void display(Node<T>* temp, unsigned int level)const;
 	void out()const;
-	void reading(const std::string filename); // чтение из файла
+	void reading(const std::string& filename); // чтение из файла
 	void output(std::ostream& ost, Node<T>* temp)const; //вывод в консоль
-	void writing(const std::string filename); //запись в файл 
+	void writing(const std::string& filename);const //запись в файл 
 };
 
 template<class T>
@@ -112,7 +112,7 @@ Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 }
 
 template<typename T>
-void Tree<T>::reading(const std::string filename)
+void Tree<T>::reading(const std::string& filename)
 {
 	ifstream fin(filename);
 	if (root != nullptr)
@@ -143,7 +143,7 @@ void Tree<T>::output(ostream& ost, Node<T>* temp)const
 }
 
 template<typename T>
-void Tree<T>::writing(const std::string filename)
+void Tree<T>::writing(const std::string& filename)
 {
 	ofstream fout(filename);
 	fout << count << " ";
