@@ -24,9 +24,9 @@ public:
 	Node<T>*root_()const;
 	void display(Node<T>* temp, unsigned int level)const;
 	void out()const;
-	void reading(const std::string& filename); // чтение из файла
-	void output(std::ostream& ost, Node<T>* temp)const; //вывод в консоль
-	void writing(const std::string& filename);const //запись в файл 
+	void reading(const std::string& filename); 
+	void output(std::ostream& ost, Node<T>* temp)const; 
+	void writing(const std::string& filename)const ;
 };
 
 template<class T>
