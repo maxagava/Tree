@@ -143,7 +143,7 @@ void Tree<T>::output(ostream& ost, Node<T>* temp)const
 }
 
 template<typename T>
-void Tree<T>::writing(const std::string& filename)
+void Tree<T>::writing(const std::string& filename)const
 {
 	ofstream fout(filename);
 	fout << count << " ";
