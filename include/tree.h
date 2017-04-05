@@ -116,11 +116,7 @@ void Tree<T>::reading(const std::string filename)
 {
 	ifstream fin(filename);
 	if (root != nullptr)
-	{
-		deleteNode(root->Right);
-		deleteNode(root->Left);
-		root = 0;
-	}
+		deleteNode(root);
 
 	int k;
 	fin >> k;
