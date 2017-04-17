@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+
 using namespace std;
 
 template <class T> struct Node
@@ -16,7 +17,7 @@ private:
 public:
 	Tree();
 	~Tree();
-	void deleteNode(Node<T>* temp);
+	void deleteTr(Node<T>* temp);
 	void insert_node(const T&);
 	int get_count()const;
 	void print()const;
@@ -24,9 +25,9 @@ public:
 	Node<T>*root_()const;
 	void display(Node<T>* temp, unsigned int level)const;
 	void out()const;
-	void reading(const std::string& filename); 
-	void output(std::ostream& ost, Node<T>* temp)const; 
-	void writing(const std::string& filename)const ;
+	void reading(const std::string& filename);
+	void output(std::ostream& ost, Node<T>* temp)const;
+	void writing(const std::string& filename)const;
 };
 
 template<class T>
@@ -38,22 +39,22 @@ Tree<T>::Tree()
 template<class T>
 Tree<T>::~Tree()
 {
-	deleteNode(root);
+	deleteTr(root);
 }
 template<class T>
-void Tree<T>::deleteNode(Node<T>* temp)
+void Tree<T>::deleteTr(Node<T>* temp)
 {
 	if (!temp)
 		return;
 	if (temp->Left)
 	{
-		deleteNode(temp->Left);
+		deleteTr(temp->Left);
 		temp->Left = nullptr;
 	}
 
 	if (temp->Right)
 	{
-		deleteNode(temp->Right);
+		deleteTr(temp->Right);
 		temp->Right = nullptr;
 	}
 	delete temp;
@@ -74,7 +75,7 @@ int Tree<T>::get_count()const
 template<class T>
 void Tree<T>::insert_node(const T&x)
 {
-	if (find_node(x, root_())) return;
+	if (find_node(x, root)!=nullptr) return;
 	Node<T>* dn = new Node<T>;
 	dn->key = x;
 	dn->Left = dn->Right = 0;
@@ -103,7 +104,7 @@ void Tree<T>::insert_node(const T&x)
 template<class T>
 Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 {
-	if (temp == 0 || val == temp->key)
+	if (temp==nullptr || val == temp->key)
 		return temp;
 	if (val > temp->key)
 		return find_node(val, temp->Right);
@@ -115,12 +116,15 @@ template<typename T>
 void Tree<T>::reading(const std::string& filename)
 {
 	ifstream fin(filename);
-	if (root != nullptr)
-		deleteNode(root);
-
 	int k;
 	fin >> k;
 	T temp;
+	if (root != nullptr)
+	{
+		deleteTr(root);
+		root = nullptr;
+		count = 0;
+	}
 	for (int i = 0; i < k; ++i)
 	{
 		fin >> temp;
@@ -169,3 +173,6 @@ void Tree<T>::out()const
 {
 	display(root, 0);
 }
+
+
+
