@@ -46,3 +46,16 @@ SCENARIO ("reading/writing", "[init]")
   REQUIRE(test2.find_node(3, test2.root_())!= nullptr);
   REQUIRE(test1.get_count() == test2.get_count());
 }
+SCENARIO("deleteX")
+{
+  Tree<int> test;
+  test.insert_node(6);
+  test.insert_node(7);
+  test.insert_node(9);
+  test.deleteVal(6);
+  test.deleteVal(9);
+  REQUIRE(test.find_node(9, test.root_())== nullptr);
+  REQUIRE(test.find_node(7, test.root_())== test.root_());
+  REQUIRE(test.root_() != nullptr);
+  REQUIRE(test.get_count() == 1);
+}
