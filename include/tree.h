@@ -26,8 +26,8 @@ public:
 	void reading(const std::string& filename);
 	void output(std::ostream& ost, Node<T>* temp)const;
 	void writing(const std::string& filename)const;
-	bool deleteValue(Node<T>* parent, Node<T>* current, T& val);
-	bool deleteVal(T value);
+	bool deleteValue(Node<T>* parent, Node<T>* current, const T& val);
+	bool deleteVal(const T& value);
 };
 
 template<class T>
@@ -99,7 +99,6 @@ void Tree<T>::insert_node(const T&x)
 			pn->Right = dn;
 	}
 	count++;
-
 }
 template<class T>
 Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
@@ -193,10 +192,11 @@ void Tree<T>::out()const
 }
 
 template<class T>
-bool Tree<T>::deleteValue(Node<T>* parent, Node<T>* current, T& val)
+bool Tree<T>::deleteValue(Node<T>* parent, Node<T>* current,const T& val)
 {
 	if (!current) return false;
-	if (current->key == val) {
+	if (current->key == val)
+	{
 		if (current->Left == NULL || current->Right == NULL) {
 			Node<T>* temp = current->Left;
 			if (current->Right) temp = current->Right;
@@ -226,12 +226,13 @@ bool Tree<T>::deleteValue(Node<T>* parent, Node<T>* current, T& val)
 		count--;
 		return true;
 	}
-	return deleteValue(current, current->Left, val) ||
-		deleteValue(current, current->Right, val);
-	
+	if (current->key > val)
+		return deleteValue(current, current->Left, val);
+	else 
+		return deleteValue(current, current->Right, val);
 }
 template<class T>
-bool Tree<T>::deleteVal(T value)
+bool Tree<T>::deleteVal(const T& value)
 {
 	return this->deleteValue(NULL,root, value);
 }
