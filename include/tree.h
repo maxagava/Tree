@@ -40,6 +40,7 @@ template<class T>
 Tree<T>::~Tree()
 {
 	deleteTr(root);
+	count=0;
 }
 template<class T>
 void Tree<T>::deleteTr(Node<T>* temp)
