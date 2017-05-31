@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+using namespace std;
 
 template <class T> struct Node
 {
@@ -15,7 +16,7 @@ private:
 public:
 	Tree();
 	~Tree();
-	void deleteTr(Node<T>* temp);
+	void deleteNode(Node<T>* temp);
 	void insert_node(const T&);
 	int get_count()const;
 	void print()const;
@@ -23,11 +24,9 @@ public:
 	Node<T>*root_()const;
 	void display(Node<T>* temp, unsigned int level)const;
 	void out()const;
-	void reading(const std::string& filename);
-	void output(std::ostream& ost, Node<T>* temp)const;
-	void writing(const std::string& filename)const;
-	bool deleteValue(Node<T>* parent, Node<T>* current, const T& val);
-	bool deleteVal(const T& value);
+	void reading(const std::string& filename); 
+	void output(std::ostream& ost, Node<T>* temp)const; 
+	void writing(const std::string& filename)const ;
 };
 
 template<class T>
@@ -39,23 +38,22 @@ Tree<T>::Tree()
 template<class T>
 Tree<T>::~Tree()
 {
-	deleteTr(root);
-	count=0;
+	deleteNode(root);
 }
 template<class T>
-void Tree<T>::deleteTr(Node<T>* temp)
+void Tree<T>::deleteNode(Node<T>* temp)
 {
 	if (!temp)
 		return;
 	if (temp->Left)
 	{
-		deleteTr(temp->Left);
+		deleteNode(temp->Left);
 		temp->Left = nullptr;
 	}
 
 	if (temp->Right)
 	{
-		deleteTr(temp->Right);
+		deleteNode(temp->Right);
 		temp->Right = nullptr;
 	}
 	delete temp;
@@ -76,7 +74,7 @@ int Tree<T>::get_count()const
 template<class T>
 void Tree<T>::insert_node(const T&x)
 {
-	if (find_node(x, root) != nullptr) return;
+	if (find_node(x, root_())) return;
 	Node<T>* dn = new Node<T>;
 	dn->key = x;
 	dn->Left = dn->Right = 0;
@@ -100,11 +98,12 @@ void Tree<T>::insert_node(const T&x)
 			pn->Right = dn;
 	}
 	count++;
+
 }
 template<class T>
 Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 {
-	if (temp == nullptr || val == temp->key)
+	if (temp == 0 || val == temp->key)
 		return temp;
 	if (val > temp->key)
 		return find_node(val, temp->Right);
@@ -115,39 +114,27 @@ Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 template<typename T>
 void Tree<T>::reading(const std::string& filename)
 {
-	
-	std::ifstream fin(filename);
-	try
+	ifstream fin(filename);
+	if (root != nullptr)
+		deleteNode(root);
+
+	int k;
+	fin >> k;
+	T temp;
+	for (int i = 0; i < k; ++i)
 	{
-		if (!fin.is_open()) throw 123;
-		int k;
-		fin >> k;
-		T temp;
-		if (root != nullptr)
-		{
-			deleteTr(root);
-			root = nullptr;
-			count = 0;
-		}
-		for (int i = 0; i < k; ++i)
-		{
-			fin >> temp;
-			insert_node(temp);
-		}
-		fin.close();
+		fin >> temp;
+		insert_node(temp);
 	}
-	catch (int i)
-	{
-		std::cout << "The file isn't found" << std::endl;
-	}
+	fin.close();
 }
 template<typename T>
 void Tree<T>::print() const
 {
-	output(std::cout, this->root);
+	output(cout, this->root);
 }
 template<typename T>
-void Tree<T>::output(std::ostream& ost, Node<T>* temp)const
+void Tree<T>::output(ostream& ost, Node<T>* temp)const
 {
 	if (!temp) return;
 	ost << temp->key << " ";
@@ -158,19 +145,10 @@ void Tree<T>::output(std::ostream& ost, Node<T>* temp)const
 template<typename T>
 void Tree<T>::writing(const std::string& filename)const
 {
-	std::ofstream fout(filename);
-	try
-	{
-		if (!fout.is_open())
-			throw 12;
-		fout << count << " ";
-		output(fout, root);
-		fout.close();
-	}
-	catch (int i)
-	{
-		std::cout << "The file isn't found" << std::endl;
-	}
+	ofstream fout(filename);
+	fout << count << " ";
+	output(fout, root);
+	fout.close();
 }
 
 template<typename T>
@@ -190,50 +168,4 @@ template<typename T>
 void Tree<T>::out()const
 {
 	display(root, 0);
-}
-
-template<class T>
-bool Tree<T>::deleteValue(Node<T>* parent, Node<T>* current,const T& val)
-{
-	if (!current) return false;
-	if (current->key == val)
-	{
-		if (current->Left == NULL || current->Right == NULL) {
-			Node<T>* temp = current->Left;
-			if (current->Right) temp = current->Right;
-			if (parent) {
-				if (parent->Left == current) {
-					parent->Left = temp;
-				}
-				else {
-					parent->Right = temp;
-				}
-			}
-			else {
-				this->root = temp;
-			}
-		}
-		else {
-			Node<T>* validSubs = current->Right;
-			while (validSubs->Left) {
-				validSubs = validSubs->Left;
-			}
-			T temp = current->key;
-			current->key = validSubs->key;
-			validSubs->key = temp;
-			return deleteValue(current, current->Right, temp);
-		}
-		delete current;
-		count--;
-		return true;
-	}
-	if (current->key > val)
-		return deleteValue(current, current->Left, val);
-	else 
-		return deleteValue(current, current->Right, val);
-}
-template<class T>
-bool Tree<T>::deleteVal(const T& value)
-{
-	return this->deleteValue(NULL,root, value);
 }
