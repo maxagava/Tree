@@ -1,6 +1,5 @@
 #include <fstream>
 #include <iostream>
-using namespace std;
 
 template <class T> struct Node
 {
@@ -16,7 +15,7 @@ private:
 public:
 	Tree();
 	~Tree();
-	void deleteNode(Node<T>* temp);
+	void deleteTr(Node<T>* temp);
 	void insert_node(const T&);
 	int get_count()const;
 	void print()const;
@@ -24,9 +23,11 @@ public:
 	Node<T>*root_()const;
 	void display(Node<T>* temp, unsigned int level)const;
 	void out()const;
-	void reading(const std::string& filename); 
-	void output(std::ostream& ost, Node<T>* temp)const; 
-	void writing(const std::string& filename)const ;
+	void reading(const std::string& filename);
+	void output(std::ostream& ost, Node<T>* temp)const;
+	void writing(const std::string& filename)const;
+	bool deleteValue(Node<T>* parent, Node<T>* current, const T& val);
+	bool deleteVal(const T& value);
 };
 
 template<class T>
@@ -38,44 +39,44 @@ Tree<T>::Tree()
 template<class T>
 Tree<T>::~Tree()
 {
-	deleteNode(root);
+	deleteTr(root);
+	count=0;
 }
-template<class T>				//ф-ция удаления узла и всех его детей
-void Tree<T>::deleteNode(Node<T>* temp)
+template<class T>			//удаляет узел и всех его детей
+void Tree<T>::deleteTr(Node<T>* temp)
 {
 	if (!temp)
 		return;
 	if (temp->Left)
 	{
-		deleteNode(temp->Left);
+		deleteTr(temp->Left);
 		temp->Left = nullptr;
 	}
 
 	if (temp->Right)
 	{
-		deleteNode(temp->Right);
+		deleteTr(temp->Right);
 		temp->Right = nullptr;
 	}
 	delete temp;
 }
 
-template<class T>			//возвращение корня
+template<class T>			//возвращает корень
 Node<T>*Tree<T>::root_()const
 {
 	return root;
 }
-
-template<class T>			//возвращение количества узлов во всем дереве
+template<class T>			//возвращает количество узлов во всем дереве
 int Tree<T>::get_count()const
 {
 	return count;
 }
 
 
-template<class T>			//вставляем узел (если значение меньше текущего, двигаемся влево, если больше - вправо
-void Tree<T>::insert_node(const T&x)
+template<class T>
+void Tree<T>::insert_node(const T&x)			//вставляет узел(если значение меньше текущего, то двигаемся влево, если больше - вправо)
 {
-	if (find_node(x, root_())) return;
+	if (find_node(x, root) != nullptr) return;
 	Node<T>* dn = new Node<T>;
 	dn->key = x;
 	dn->Left = dn->Right = 0;
@@ -99,13 +100,11 @@ void Tree<T>::insert_node(const T&x)
 			pn->Right = dn;
 	}
 	count++;
-
 }
-
-template<class T>			//поиск узла по значению
-Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
+template<class T>							//поиск узла по значению
+Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const 			
 {
-	if (temp == 0 || val == temp->key)
+	if (temp == nullptr || val == temp->key)
 		return temp;
 	if (val > temp->key)
 		return find_node(val, temp->Right);
@@ -113,31 +112,42 @@ Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 		return find_node(val, temp->Left);
 }
 
-template<typename T>			//чтение из файла
+template<typename T>
 void Tree<T>::reading(const std::string& filename)
 {
-	ifstream fin(filename);
-	if (root != nullptr)
-		deleteNode(root);
-
-	int k;
-	fin >> k;
-	T temp;
-	for (int i = 0; i < k; ++i)
+	
+	std::ifstream fin(filename);
+	try
 	{
-		fin >> temp;
-		insert_node(temp);
+		if (!fin.is_open()) throw 123;
+		int k;
+		fin >> k;
+		T temp;
+		if (root != nullptr)
+		{
+			deleteTr(root);
+			root = nullptr;
+			count = 0;
+		}
+		for (int i = 0; i < k; ++i)
+		{
+			fin >> temp;
+			insert_node(temp);
+		}
+		fin.close();
 	}
-	fin.close();
+	catch (int i)
+	{
+		std::cout << "The file isn't found" << std::endl;
+	}
 }
-
 template<typename T>
 void Tree<T>::print() const
 {
-	output(cout, this->root);
+	output(std::cout, this->root);
 }
 template<typename T>
-void Tree<T>::output(ostream& ost, Node<T>* temp)const
+void Tree<T>::output(std::ostream& ost, Node<T>* temp)const
 {
 	if (!temp) return;
 	ost << temp->key << " ";
@@ -148,10 +158,19 @@ void Tree<T>::output(ostream& ost, Node<T>* temp)const
 template<typename T>
 void Tree<T>::writing(const std::string& filename)const
 {
-	ofstream fout(filename);
-	fout << count << " ";
-	output(fout, root);
-	fout.close();
+	std::ofstream fout(filename);
+	try
+	{
+		if (!fout.is_open())
+			throw 12;
+		fout << count << " ";
+		output(fout, root);
+		fout.close();
+	}
+	catch (int i)
+	{
+		std::cout << "The file isn't found" << std::endl;
+	}
 }
 
 template<typename T>
@@ -172,3 +191,49 @@ void Tree<T>::out()const
 {
 	display(root, 0);
 }
+
+template<class T>
+bool Tree<T>::deleteValue(Node<T>* parent, Node<T>* current,const T& val)
+{
+	if (!current) return false;
+	if (current->key == val)
+	{
+		if (current->Left == NULL || current->Right == NULL) {
+			Node<T>* temp = current->Left;
+			if (current->Right) temp = current->Right;
+			if (parent) {
+				if (parent->Left == current) {
+					parent->Left = temp;
+				}
+				else {
+					parent->Right = temp;
+				}
+			}
+			else {
+				this->root = temp;
+			}
+		}
+		else {
+			Node<T>* validSubs = current->Right;
+			while (validSubs->Left) {
+				validSubs = validSubs->Left;
+			}
+			T temp = current->key;
+			current->key = validSubs->key;
+			validSubs->key = temp;
+			return deleteValue(current, current->Right, temp);
+		}
+		delete current;
+		count--;
+		return true;
+	}
+	if (current->key > val)
+		return deleteValue(current, current->Left, val);
+	else 
+		return deleteValue(current, current->Right, val);
+}
+template<class T>
+bool Tree<T>::deleteVal(const T& value)
+{
+	return this->deleteValue(NULL,root, value);
+}я во
