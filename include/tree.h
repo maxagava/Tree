@@ -42,7 +42,7 @@ Tree<T>::~Tree()
 	deleteTr(root);
 	count=0;
 }
-template<class T>
+template<class T>			//удаляет узел и всех его детей
 void Tree<T>::deleteTr(Node<T>* temp)
 {
 	if (!temp)
@@ -61,19 +61,19 @@ void Tree<T>::deleteTr(Node<T>* temp)
 	delete temp;
 }
 
-template<class T>
+template<class T>			//возвращает корень
 Node<T>*Tree<T>::root_()const
 {
 	return root;
 }
-template<class T>
+template<class T>			//возвращает количество узлов во всем дереве
 int Tree<T>::get_count()const
 {
 	return count;
 }
 
 
-template<class T>
+template<class T>			//вставляет узел (если значение меньше текущего, то двигаемся влево, если больше или равно - вправо
 void Tree<T>::insert_node(const T&x)
 {
 	if (find_node(x, root) != nullptr) return;
@@ -101,7 +101,7 @@ void Tree<T>::insert_node(const T&x)
 	}
 	count++;
 }
-template<class T>
+template<class T>			//поиск узла по значению
 Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 {
 	if (temp == nullptr || val == temp->key)
@@ -112,7 +112,7 @@ Node<T>* Tree<T>::find_node(const T& val, Node<T>* temp) const
 		return find_node(val, temp->Left);
 }
 
-template<typename T>
+template<typename T>			//чтение из файла
 void Tree<T>::reading(const std::string& filename)
 {
 	
